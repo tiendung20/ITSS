@@ -217,7 +217,7 @@ int getch()
 }
 
 void makeCommand(char *command, char *code, char *param1, char *param2)
-{
+{	
 	strcpy(command, code);
 	strcat(command, "|");
 	if (param1 != NULL)
@@ -290,7 +290,7 @@ void runDevice(int i, int isSaving)
 		strcat(deviceName, "|NORMAL|");
 		voltage = deviceList[i].normalMode;
 	}
-	//snprintf(buffer, 10, "%d", voltage);
+	snprintf(buffer, 10, "%d", voltage);
 	makeCommand(command, "ON", deviceName, buffer);
 	send(clientSocket, command, strlen(command), 0);
 	getResponse();
