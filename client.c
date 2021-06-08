@@ -69,6 +69,8 @@ int main()
 	token = strtok(NULL, "|");
 	maxDevice = atoi(token);
 
+	printf("Max devices: %d\nMax threshold: %d\n", maxDevice, maxThreshold);
+
 	// khởi tạo kết nối IP
 	struct sockaddr_in serverAddr;
 	clientSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -217,7 +219,7 @@ int getch()
 }
 
 void makeCommand(char *command, char *code, char *param1, char *param2)
-{	
+{
 	strcpy(command, code);
 	strcat(command, "|");
 	if (param1 != NULL)
@@ -295,7 +297,11 @@ void runDevice(int i, int isSaving)
 	send(clientSocket, command, strlen(command), 0);
 	getResponse();
 	getShareMemoryPointer(serverResponse);
-	int *currentDevice = shm + 1;
+	int *currentDevice;
+	currentDevice = shm + 1;
+
+	printf("Current Device is: %d\n", *currentDevice);
+
 	if (*currentDevice <= maxDevice)
 	{
 		*currentDevice++;
@@ -314,7 +320,7 @@ void runDevice(int i, int isSaving)
 			if (show_message == 0) {
 				printf("The current device is running at %d W\n Press enter to stop this device\n", voltage);
 				show_message = 1;
-			} 
+			}
 		}
 		else if (*shm <= maxThreshold) //5000
 		{
