@@ -95,8 +95,9 @@ int main(){
         }
 
         *shm = 0;
-        int *currentDevice = shm+1;
-        *currentDevice = 2;
+        int *currentDevice;
+        currentDevice = shm + 1;
+        *currentDevice = 0;
         getInfo("1111");                // sử dụng log của hệ thống
 
         // connectMng
@@ -124,6 +125,10 @@ int main(){
         // nhận kết nối từ client
         while (1) {
                 connectSock = accept (listenSock, (struct sockaddr *) &clientAddr, &clilen);
+                *currentDevice = *currentDevice + 1;
+
+                printf("Current Device: %d\n", *currentDevice);
+
                 // tạo tiến trình con
                 if((pid=fork()) == 0) {
                         close(listenSock);
