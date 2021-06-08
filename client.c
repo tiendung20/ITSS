@@ -306,20 +306,28 @@ void runDevice(int i, int isSaving)
 		exit(0);
 	}
 	countDown = 10;
+	int show_message = 0;
 	while (1)
 	{
 		if (*shm <= threshold) //4500
 		{
-			printf("The current device is running at %d W\n Press enter to stop this device\n", voltage);
+			if (show_message == 0) {
+				printf("The current device is running at %d W\n Press enter to stop this device\n", voltage);
+				show_message = 1;
+			} 
 		}
 		else if (*shm <= maxThreshold) //5000
 		{
-			printf("The threshold is exceeded. The supply currently is %d\n", *shm);
+			if (show_message == 0) {
+				printf("Waring: The threshold is exceeded. The supply currently is %d\n", *shm);
+				show_message = 1;
+			}
 		}
 		else
 		{
 			printf("Maximum threshold is exceeded. A device will be turn off in %d\n", countDown);
 			countDown--;
+			show_message = 0;
 			if (countDown < 0)
 			{
 				stopDevice(deviceName);
