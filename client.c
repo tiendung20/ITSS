@@ -308,7 +308,7 @@ void runDevice(int i, int isSaving)
 	}
 	else
 	{
-		printf("Max device is %d\n", maxDevice);
+		printf("Max device is %d. Please connect next time.\n", maxDevice);
 		exit(0);
 	}
 	countDown = 10;
@@ -331,7 +331,7 @@ void runDevice(int i, int isSaving)
 		}
 		else
 		{
-			printf("Maximum threshold is exceeded. A device will be turn off in %d\n", countDown);
+			printf("Current Power Consumption: %d > 5000. Maximum threshold is exceeded.\nA device will be restart in %d\n", *shm, countDown);
 			countDown--;
 			show_message = 0;
 			if (countDown < 0)
