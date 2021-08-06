@@ -91,9 +91,9 @@ int main()
                         a[0] = strtok(temp, "|");
                         a[1] = strtok(NULL, "|");
                         a[2] = strtok(NULL, "|");
-                        sprintf(buffer, "log%s.txt", a[0]);
+                        sprintf(buffer, "log/log_%s.txt", a[0]);
                         writeLog(buffer, a[0], a[1], a[2]);
-                        writeLog("log.txt", a[0], a[1], a[2]);
+                        writeLog("log/all_log.txt", a[0], a[1], a[2]);
                         strcpy(shm, "FALSE");
                 }
                 usleep(60);

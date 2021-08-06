@@ -14,11 +14,11 @@
 #include <sys/shm.h>
 #define SHMSZ    1024
 
-// lấy thông tin về hệ thống 
+// lấy thông tin về hệ thống
 char* readFileIntoString() {
         char * buffer = 0;
         long length;
-        FILE * f = fopen ("systemInfo.txt", "rb");
+        FILE * f = fopen ("info/systemInfo.txt", "rb");
 
         if (f)
         {
