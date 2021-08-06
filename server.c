@@ -143,6 +143,7 @@ int main()
 
                 printf("Current Device: %d\n", *currentDevice);
 
+
                 // tạo tiến trình con
                 if ((pid = fork()) == 0)
                 {
@@ -170,6 +171,7 @@ int main()
                                         currentVoltage = atoi(cmd.params[2]);
                                         *shm = *shm + currentVoltage;
                                 }
+                                printf("Current Power Consumption: %d\n", *shm);
                                 send(connectSock, KEY, 4, 0);
                         }
                         if (currentVoltage != 0)

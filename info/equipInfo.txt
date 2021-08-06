@@ -1,1 +1,1 @@
-TV|6000|500,AR|4500|500,PC|700|300,IRON|1000|1000,LIGHT|1600|200,
+ Ti Vi|130|100, Tu lanh|200|175, May tinh|250|200, Ban la|1100|1000, Bong den|25|20, Dieu hoa|1200|1000, Quat dien|55|48, May giat|450|400,
