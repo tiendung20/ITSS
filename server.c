@@ -143,6 +143,7 @@ int main()
 
                 printf("Current Device: %d\n", *currentDevice);
 
+                int i = 0;
 
                 // tạo tiến trình con
                 if ((pid = fork()) == 0)
@@ -159,19 +160,30 @@ int main()
 
                                 request[n] = '\0';
                                 cmd = convertRequestToCommand(request);
-                                if (strcmp(cmd.code, "STOP") == 0)
+                                if (strcmp(cmd.code, "STOP") == 0 && i == 0)
                                 {
                                         *shm = *shm - currentVoltage;
                                         currentVoltage = 0;
                                         sprintf(shm2, "%s|%s|%s|", cmd.params[0], "STOP", "0");
+                                        i++;
                                 }
-                                else
+                                else if (strcmp(request, "command") != 0 && strcmp(request, "SavingMode") != 0)
                                 {
                                         sprintf(shm2, "%s|%s|%s|", cmd.params[0], cmd.params[1], cmd.params[2]);
                                         currentVoltage = atoi(cmd.params[2]);
                                         *shm = *shm + currentVoltage;
                                 }
-                                printf("Current Power Consumption: %d\n", *shm);
+                                if (*shm <= 5000)
+                                {
+                                        printf("Current Power Consumption: %d\n", *shm);
+                                }
+                                else
+                                {
+                                        if (strcmp(request, "SavingMode") == 0)
+                                        {
+                                                *shm = -1;
+                                        }
+                                }
                                 send(connectSock, KEY, 4, 0);
                         }
                         if (currentVoltage != 0)

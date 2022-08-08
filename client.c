@@ -61,6 +61,8 @@ int main()
 	getInfo("9999");
 	strcpy(systemInfo, shm2);
 
+	printf("%s\n", info);
+
 	char *token;
 	token = strtok(systemInfo, "|");
 	threshold = atoi(token);
@@ -312,41 +314,61 @@ void runDevice(int i, int isSaving)
 		exit(0);
 	}
 	countDown = 10;
-	int show_message = 0;
+	int show_message = 0, i_check = 0;
 	while (1)
 	{
-		if (*shm <= threshold) //4500
+		if (*shm == 0)
 		{
-			if (show_message == 0) {
+			sleep(1);
+			*shm += deviceList[i].savingMode;
+			voltage = deviceList[i].savingMode;
+			show_message = 0;
+			i_check = 1;
+			send(clientSocket, "SavingMode", strlen("SavingMode"), 0);
+		}
+		if (*shm <= threshold && *shm >= 0) // 4500
+		{
+			if (show_message == 0)
+			{
 				printf("The current device is running at %d W\n Press enter to stop this device\n", voltage);
 				show_message = 1;
 			}
 		}
-		else if (*shm <= maxThreshold) //5000
+		else if (*shm <= maxThreshold && *shm >= 0) // 5000
 		{
-			if (show_message == 0) {
+			if (show_message == 0)
+			{
+				printf("The current device is running at %d W\n Press enter to stop this device\n", voltage);
 				printf("Waring: The threshold is exceeded. The supply currently is %d\n", *shm);
 				show_message = 1;
 			}
 		}
 		else
 		{
-			printf("Current Power Consumption: %d > 5000. Maximum threshold is exceeded.\nA device will be restart in %d\n", *shm, countDown);
-			countDown--;
-			show_message = 0;
-			if (countDown < 0)
+			if (*shm != -1 && i_check == 0)
+			{
+				*shm = 0;
+				send(clientSocket, "command", strlen("command"), 0);
+			}
+			else
+			{
+				printf("Current Power Consumption: %d > 5000. Maximum threshold is exceeded.\nA device will be restart in %d\n", *shm, countDown);
+				countDown--;
+				show_message = 0;
+				if (countDown < 0)
+				{
+					stopDevice(deviceName);
+					break;
+				}
+			}
+
+			if (kbhit())
 			{
 				stopDevice(deviceName);
 				break;
 			}
+			sleep(1);
 		}
-
-		if (kbhit())
-		{
-			stopDevice(deviceName);
-			break;
-		}
-		sleep(1);
 	}
 }
 
